@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+<!--About page with url about-->
+{% block content %}
+    {% if not cart_items %}
+    <div class="text-center">
+        <br>
+        <h1 class="text-center product_title">
+            Your cart is empty
+        </h1>
+        <a href="{% url "home" %}">
+            <button type="button" class="btn btn-lg btn-block text-white" style="background-color: #444345">
+                Back To Products
+            </button>
+        </a>
+    </div>
+
+    {% else %}
+    <div class="text-center">
+        <br>
+        <div class="text-center product_title">
+            Shopping Cart
+        </div>
+    </div>
+    <div class="row mx-auto">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+            <table class="table cart-table">
+                <thead class="cart-thead">
+                    <tr>
+                        <th colspan="4">
+                            Your items
+                        </th>
+                    </tr>
+                </thead>
+                {% for item in cart_items %}
+                    <tr>
+                        <td>
+                            <a href="{{ item.product.get_url }}"><img src="{{ item.product.image }}" width="200" height="200"></a>
+                        </td>
+                        <td class="text-left">
+                            {{ item.product.name }}
+                            <br>
+                            SKU: {{ item.product.id }}
+                            <br>
+                            Price: ${{ item.product.price }}
+                            <br>
+                            Quantity: {{ item.quantity }} * ${{ item.product.price }}
+                        </td>
+                        <td>
+                            <div class="text-info font-italic mb-0">${{ item.sub_total }}</div>
+                        </td>
+                        <td>
+                            {% if item.quantity < item.product.stock %}
+                                <a href="{% url "add_cart" item.product.id %}"><i class="material-icons cart-icon">add</i></a>
+                            {% endif %}
+                            <a href="{% url "cart_remove" item.product.id %}"><i class="material-icons cart-icon">remove</i></a>
+                            <a href="{% url "cart_delete" item.product.id %}"><i class="material-icons cart-icon">delete</i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+            <table class="table cart-table">
+                <thead class="cart-thead">
+                    <tr>
+                        <th colspan="4">
+                            Check Out
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            Please check your cart before payment.
+                        </td>
+                    </tr>
+                    <tr class="text-left">
+                        <td>
+                            Your total bill is: <strong class="text-info font-italic mb-0">${{ total }}</strong>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="mx-auto">
+                <a href="{% url "home" %}">
+                    <button type="button" class="btn btn-lg btn-block text-white" style="background-color: #444345">
+                        Back To Products
+                    </button>
+                </a>
+                <br><br>
+                <a href="{% url "order" %}">
+                    <button type="button" class="btn btn-lg btn-block text-white" style="background-color: #444345">
+                        Order
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}

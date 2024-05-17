@@ -1,0 +1,58 @@
+<header>
+        <nav class="navbar sticky-top navbar-expand-md navbar-light" style="background-color: #444345">
+            <a class="navbar-brand" href="{% url "home"%}"><i class="material-icons text-success">store</i></a>
+            <button class="navbar-toggler bg-light" data-toggle="collapse" data-target="#navbar"><span class="navbar-toggler-icon"></span></button>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link text-light text-uppercase font-weight-bold px-3 dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="">Categories</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url "home" %}">All Products</a>
+                            <div class="dropdown-divider"></div>
+                            {% for category in links %}
+                            <a class="dropdown-item" href="{{ category.get_url }}">{{ category.name }}</a>
+                            {% endfor %}
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light text-uppercase font-weight-bold px-3" href="{% url "about" %}">Contacts</a>
+                    </li>
+                <!--
+                    <li class="nav-item">
+                        <a class="nav-link text-light text-uppercase font-weight-bold px-3" href="{% url "about" %}">About</a>
+                    </li>
+                -->
+                {% if request.user.is_authenticated and request.user.first_name %}
+                    <li class="nav-item">
+                        <span class="nav-link text-light text-uppercase font-weight-bold px-3">Welcome, {{ request.user.first_name }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light text-uppercase font-weight-bold px-3" href="{% url "logout" %}">Sign Out</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link text-light text-uppercase font-weight-bold px-3" href="{% url "login" %}">Log In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light text-uppercase font-weight-bold px-3" href="{% url "sign_up" %}">Sign Up</a>
+                    </li>
+                {% endif %}
+                {% if item_count > 0 %}
+                    <li class="nav-item">
+                        <a class="nav-link text-light text-uppercase font-weight-bold px-3" href="{% url "cart_detail" %}"><i class="material-icons">shopping_cart</i>({{ item_count }})</a>
+                    </li>
+                {% endif %}
+                </ul>
+                <!--
+                <form class="form-inline">
+                    <div class="input-group">
+                        <input type="" placeholder="Search">
+                        <div>
+                            <button class="btn-success"><i class="material-icons">search</i></button>
+                        </div>
+                    </div>
+                </form>
+                -->
+            </div>
+        </nav>
+    </header>
